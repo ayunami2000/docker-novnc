@@ -3,6 +3,7 @@ FROM debian:buster
 # Install git, supervisor, VNC, & X11 packages
 RUN set -ex; \
     apt-get update; \
+    apt-get upgrade; \
     apt-get install -y \
       bash \
       fluxbox \
@@ -12,7 +13,14 @@ RUN set -ex; \
       supervisor \
       x11vnc \
       xterm \
-      xvfb
+      xvfb \
+      sudo \
+      curl \
+      jq \
+      snapd \
+      openjdk-11-jdk;
+    
+      
 
 # Setup demo environment variables
 ENV HOME=/root \
@@ -26,5 +34,19 @@ ENV HOME=/root \
     RUN_XTERM=yes \
     RUN_FLUXBOX=yes
 COPY . /app
+
 CMD ["/app/entrypoint.sh"]
 EXPOSE 8080
+
+RUN set -ex; \
+    apt-get install -y anbox-modules-dkms android-tools-adb; \
+    modprobe ashmem_linux; \
+    modprobe binder_linux; \
+    wget https://redirector.gvt1.com/edgedl/android/studio/ide-zips/4.1.1.0/android-studio-ide-201.6953283-linux.tar.gz; \
+    tar -xf android-studio-ide-201.6953283-linux.tar.gz; \
+    cd android-studio/bin; \
+    ./studio.sh; \
+    adb start-server; \
+    wget -O app.apk `curl -s 'http://ws75.aptoide.com/api/7/apps/search/query=com.innersloth.spacemafia/limit=1' | jq -r ".datalist.list[0].file.path"`; \
+    adb install app.apk; \
+    anbox;
