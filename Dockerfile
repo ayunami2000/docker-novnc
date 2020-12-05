@@ -3,7 +3,7 @@ FROM debian:buster
 # Install git, supervisor, VNC, & X11 packages
 RUN set -ex; \
     apt-get update; \
-    apt-get upgrade; \
+    apt-get upgrade -y; \
     apt-get install -y \
       bash \
       fluxbox \
