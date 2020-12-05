@@ -15,6 +15,7 @@ RUN set -ex; \
       xterm \
       xvfb \
       sudo \
+      wget \
       curl \
       jq \
       snapd \
