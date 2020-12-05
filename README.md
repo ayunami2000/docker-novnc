@@ -18,7 +18,7 @@ This image is intended to be used for displaying android applications in a brows
 ### AnBox
 Run:
 ```bash
-$ docker run --rm -it -p 8080:8080 ayunami2000/anbox-novnc
+$ docker run --privileged --rm -it -p 8080:8080 ayunami2000/anbox-novnc
 ```
 Open a browser and see the **android setup utility after a short wait** at `http://<server>:8080/vnc.html`
 
